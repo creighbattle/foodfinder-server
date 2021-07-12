@@ -1,4 +1,4 @@
-require("dotenv").config();
+//require("dotenv").config();
 
 const express = require("express");
 const app = express();
@@ -165,5 +165,5 @@ app.delete("/deletemeal", async (req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log("Server has started on port 5000");
+  console.log("Server has started on port 8080");
 });
