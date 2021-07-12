@@ -3,22 +3,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-//const pool = require("./db");
+const pool = require("./db");
 const axios = require("axios");
-
-const { Client } = require("pg");
-
-const client = new Client({
-  username: process.env.USERNAME,
-  password: process.env.PASSWORD,
-  host: process.env.HOST,
-  port: process.env.PORT,
-  database: process.env.DATABASE,
-});
-
-client.connect().then(() => {
-  console.log("connected");
-});
 
 //middleware
 app.use(cors());
@@ -36,13 +22,12 @@ app.post("/submitnote", async (req, res) => {
   try {
     const { title, details, category } = req.body;
 
-    const newTodo = await client.query(
+    const newTodo = await pool.query(
       "INSERT INTO notes (note_title, note_details, note_category) VALUES($1, $2, $3) RETURNING *",
       [title, details, category]
     );
 
     res.send("Success");
-    client.end();
   } catch (e) {
     console.log(e);
     res.send(e);
@@ -53,10 +38,9 @@ app.post("/submitnote", async (req, res) => {
 
 app.get("/notes", async (req, res) => {
   try {
-    const note = await client.query("SELECT * FROM notes");
+    const note = await pool.query("SELECT * FROM notes");
     // console.log(note.rows);
     res.send(note.rows);
-    client.end();
   } catch (e) {
     console.log(e);
   }
@@ -67,11 +51,10 @@ app.get("/notes", async (req, res) => {
 app.delete("/notes/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteTodo = await client.query("DELETE FROM notes WHERE id = $1", [
+    const deleteTodo = await pool.query("DELETE FROM notes WHERE id = $1", [
       id,
     ]);
     res.send("Note was deleted");
-    client.end();
   } catch (error) {
     console.log(error);
   }
@@ -97,12 +80,11 @@ app.post("/createUser", async (req, res) => {
   const { uid, fname, lname, email } = req.body;
 
   try {
-    const newUser = await client.query(
+    const newUser = await pool.query(
       "INSERT INTO users (id, first_name, last_name, email) VALUES($1, $2, $3, $4) RETURNING *",
       [uid, fname, lname, email]
     );
     res.send("New user created");
-    client.end();
   } catch (error) {
     console.log(error);
   }
@@ -114,13 +96,12 @@ app.post("/userinfo", async (req, res) => {
   const uid = req.body.uid;
   console.log(uid);
   try {
-    const info = await client.query(
+    const info = await pool.query(
       "SELECT first_name, last_name FROM users WHERE id = $1",
       [uid]
     );
     console.log(info.rows);
     res.send(info.rows);
-    client.end();
   } catch (error) {
     console.log(error);
   }
@@ -142,13 +123,12 @@ app.post("/savemeal", async (req, res) => {
   const obj2 = JSON.stringify(mealIngredients);
 
   try {
-    const response = await client.query(
+    const response = await pool.query(
       "INSERT INTO meals (id, mealTitle, mealImage, mealCalories, mealUrl, mealNutrients, mealIngredients) VALUES($1, $2, $3, $4, $5, $6, $7)",
       [id, mealTitle, mealImage, mealCalories, mealUrl, obj1, obj2]
     );
 
     res.send(response.rows);
-    client.end();
   } catch (error) {
     console.log(error);
   }
@@ -159,12 +139,11 @@ app.post("/getmeals", async (req, res) => {
   const { uid } = req.body;
 
   try {
-    const response = await client.query("SELECT * FROM meals WHERE id = $1", [
+    const response = await pool.query("SELECT * FROM meals WHERE id = $1", [
       uid,
     ]);
 
     res.send(response.rows);
-    client.end();
   } catch (error) {
     console.log(error);
   }
@@ -175,12 +154,11 @@ app.post("/getmeals", async (req, res) => {
 app.delete("/deletemeal", async (req, res) => {
   try {
     const { uid, mealTitle } = req.body;
-    const deleteMeal = await client.query(
+    const deleteMeal = await pool.query(
       "DELETE FROM meals WHERE id = $1 and mealTitle = $2",
       [uid, mealTitle]
     );
     res.send("Meal was deleted");
-    client.end();
   } catch (error) {
     console.log(error);
   }
