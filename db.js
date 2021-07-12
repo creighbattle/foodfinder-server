@@ -7,6 +7,8 @@ const pool = new Pool({
   host: process.env.HOST,
   port: process.env.PORT,
   database: process.env.DATABASE,
+  idleTimeoutMillis: 0,
+  connectionTimeoutMillisL: 0,
   // connectionString: process.env.DATABASE_URL,
 });
 
