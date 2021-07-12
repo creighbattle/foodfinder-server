@@ -164,6 +164,6 @@ app.delete("/deletemeal", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 5000, () => {
+app.listen(8080, () => {
   console.log("Server has started on port 5000");
 });
