@@ -14,6 +14,10 @@ app.use(express.json()); //req.body
 
 //Add a note
 
+app.get("/test", async (req, res) => {
+  res.send("Hello there");
+});
+
 app.post("/submitnote", async (req, res) => {
   try {
     const { title, details, category } = req.body;
@@ -57,9 +61,6 @@ app.delete("/notes/:id", async (req, res) => {
 });
 
 app.post("/meals", async (req, res) => {
-  const appKey = "250d4df016b996a740ac2149695f4264";
-  const appId = "7c88495a";
-
   const { stringText } = req.body;
 
   try {
