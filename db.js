@@ -1,6 +1,6 @@
 const Pool = require("pg").Pool;
 const pool = new Pool({
-  username: 'db',
+  user: 'db',
   password: process.env.PASSWORD,
   host: process.env.HOST,
   port: 25060,
