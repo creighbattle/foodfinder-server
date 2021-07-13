@@ -7,7 +7,7 @@ const pool = require("./db");
 const axios = require("axios");
 
 //middleware
-app.use(cors({origin: 'https://boring-lichterman-51f30d.netlify.app'}));
+app.use(cors({ origin: "https://boring-lichterman-51f30d.netlify.app" }));
 app.use(express.json()); //req.body
 
 //Routes//
@@ -61,6 +61,17 @@ app.delete("/notes/:id", async (req, res) => {
 });
 
 app.post("/meals", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  ); // If needed
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  ); // If needed
+  res.setHeader("Access-Control-Allow-Credentials", true);
+
   const { stringText } = req.body;
 
   try {
