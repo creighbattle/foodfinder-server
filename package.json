@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "devStart": "nodemon index.js",
-    "start": "node ./bin/www"
+    "start": "node index.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
