@@ -86,7 +86,7 @@ app.post("/createUser", async (req, res) => {
     );
     res.send("New user created");
   } catch (error) {
-    console.log(error);
+    console.log("User error:" + error);
   }
 });
 
@@ -164,6 +164,6 @@ app.delete("/deletemeal", async (req, res) => {
   }
 });
 
-app.listen(8080, () => {
-  console.log("Server has started on port 8080");
+app.listen(process.env.PORT, () => {
+  console.log("Server has started");
 });
